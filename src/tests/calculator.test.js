@@ -1,6 +1,16 @@
 "use strict";
 
-const { add, subtract, multiply, divide, execute, parseCliArgs } = require("../calculator");
+const {
+  add,
+  subtract,
+  multiply,
+  divide,
+  modulo,
+  power,
+  squareRoot,
+  execute,
+  parseCliArgs,
+} = require("../calculator");
 
 describe("calculator arithmetic functions", () => {
   describe("add", () => {
@@ -58,6 +68,50 @@ describe("calculator arithmetic functions", () => {
       expect(() => divide([8, 0])).toThrow("Division by zero is not allowed.");
     });
   });
+
+  describe("modulo", () => {
+    test("matches extended operations image example (5 % 2)", () => {
+      expect(modulo(5, 2)).toBe(1);
+    });
+
+    test("returns the remainder of a divided by b", () => {
+      expect(modulo(10, 3)).toBe(1);
+    });
+
+    test("throws an error on modulo by zero", () => {
+      expect(() => modulo(10, 0)).toThrow("Modulo by zero is not allowed.");
+    });
+  });
+
+  describe("power", () => {
+    test("matches extended operations image example (2 ^ 3)", () => {
+      expect(power(2, 3)).toBe(8);
+    });
+
+    test("raises base to exponent", () => {
+      expect(power(2, 5)).toBe(32);
+    });
+  });
+
+  describe("squareRoot", () => {
+    test("matches extended operations image example (√16)", () => {
+      expect(squareRoot(16)).toBe(4);
+    });
+
+    test("returns the square root of a non-negative number", () => {
+      expect(squareRoot(81)).toBe(9);
+    });
+
+    test("handles zero input", () => {
+      expect(squareRoot(0)).toBe(0);
+    });
+
+    test("throws an error for negative numbers", () => {
+      expect(() => squareRoot(-1)).toThrow(
+        "Square root of a negative number is not allowed."
+      );
+    });
+  });
 });
 
 describe("calculator execution and CLI parsing", () => {
@@ -75,6 +129,30 @@ describe("calculator execution and CLI parsing", () => {
 
   test("execute routes to division", () => {
     expect(execute("divide", [20, 5])).toBe(4);
+  });
+
+  test("execute routes to modulo", () => {
+    expect(execute("modulo", [10, 3])).toBe(1);
+  });
+
+  test("execute routes modulo for image example values", () => {
+    expect(execute("modulo", [5, 2])).toBe(1);
+  });
+
+  test("execute routes to power", () => {
+    expect(execute("power", [2, 5])).toBe(32);
+  });
+
+  test("execute routes power for image example values", () => {
+    expect(execute("power", [2, 3])).toBe(8);
+  });
+
+  test("execute routes to square root", () => {
+    expect(execute("squareRoot", [81])).toBe(9);
+  });
+
+  test("execute routes square root for image example values", () => {
+    expect(execute("squareRoot", [16])).toBe(4);
   });
 
   test("parseCliArgs supports operation flags", () => {

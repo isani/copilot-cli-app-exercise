@@ -14,6 +14,9 @@ const OPERATIONS = Object.freeze({
   subtract: "subtract",
   multiply: "multiply",
   divide: "divide",
+  modulo: "modulo",
+  power: "power",
+  squareRoot: "squareRoot",
 });
 
 function add(numbers) {
@@ -37,6 +40,24 @@ function divide(numbers) {
     }
     return total / value;
   }, first);
+}
+
+function modulo(a, b) {
+  if (b === 0) {
+    throw new Error("Modulo by zero is not allowed.");
+  }
+  return a % b;
+}
+
+function power(base, exponent) {
+  return base ** exponent;
+}
+
+function squareRoot(n) {
+  if (n < 0) {
+    throw new Error("Square root of a negative number is not allowed.");
+  }
+  return Math.sqrt(n);
 }
 
 function parseNumbers(rawValues) {
@@ -131,6 +152,12 @@ function execute(operation, numbers) {
       return multiply(numbers);
     case OPERATIONS.divide:
       return divide(numbers);
+    case OPERATIONS.modulo:
+      return modulo(numbers[0], numbers[1]);
+    case OPERATIONS.power:
+      return power(numbers[0], numbers[1]);
+    case OPERATIONS.squareRoot:
+      return squareRoot(numbers[0]);
     default:
       throw new Error("Unsupported operation requested.");
   }
@@ -144,6 +171,9 @@ Supported operations:
   - Subtraction (-) via --subtract
   - Multiplication (*, x, ×) via --multiply
   - Division (/, ÷) via --divide
+  - Modulo (%) via modulo(a, b)
+  - Exponentiation (power) via power(base, exponent)
+  - Square root via squareRoot(n)
 
 Usage:
   node src/calculator.js --add 5 3
@@ -151,6 +181,12 @@ Usage:
   node src/calculator.js --multiply 3 4
   node src/calculator.js --divide 10 2
   node src/calculator.js "5 + 3"
+
+Programmatic examples:
+  const { modulo, power, squareRoot } = require("./src/calculator");
+  modulo(10, 3)      // 1
+  power(2, 5)        // 32
+  squareRoot(81)     // 9
 `);
 }
 
@@ -179,6 +215,9 @@ module.exports = {
   subtract,
   multiply,
   divide,
+  modulo,
+  power,
+  squareRoot,
   parseCliArgs,
   execute,
 };
